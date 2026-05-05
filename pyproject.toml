@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "netgraph3d"
-version = "0.1.11"
+version = "0.1.12"
 description = "Convert any NetworkX graph to an interactive 3D HTML visualization"
 readme = "README.md"
 license = {text = "MIT"}
@@ -12,4 +12,4 @@ requires-python = ">=3.8"
 dependencies = ["networkx"]
 
 [project.urls]
-Homepage = "https://github.com/YOUR_USERNAME/netgraph3d"
+Homepage = "https://github.com/mobina1380/netgraph3d/"
