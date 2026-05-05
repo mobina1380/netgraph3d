@@ -7,9 +7,12 @@ name = "netgraph3d"
 version = "0.1.14"
 description = "Convert any NetworkX graph to an interactive 3D HTML visualization"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
 requires-python = ">=3.8"
 dependencies = ["networkx"]
 
 [project.urls]
 Homepage = "https://github.com/mobina1380/netgraph3d/"
+
+[tool.setuptools.packages.find]
+include = ["netgraph3d*"]
