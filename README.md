@@ -1,45 +1,25 @@
 # netgraph3d 🌐
 
-<p align="center">
-  <b>Turn any NetworkX graph into a stunning interactive 3D visualization — with one line of code.</b>
-</p>
-
-<p align="center">
-  Interactive • Self-contained HTML • Zero frontend setup • Share anywhere
-</p>
-
----
-
-## ✨ Demo
-
-<p align="center">
-  <img src="https://github.com/mobina1380/netgraph3d/blob/main/assets/demo.gif?raw=true" width="900"/>
-</p>
-
----
-
-## 🚀 Quick Start
+**Turn any NetworkX graph into a stunning interactive 3D visualization — with one line of code.**
 
 ```python
 from netgraph3d import to_html
-import networkx as nx
-
-G = nx.karate_club_graph()
-
-to_html(G, title="Karate Club Network")
+to_html(G)
 ```
 
-That's it.
-
-A fully interactive 3D graph opens instantly in your browser.
-
-No server.  
-No JavaScript setup.  
-No frontend framework required.
+A single HTML file is generated and opens automatically in your browser. No server needed. No dependencies beyond NetworkX.
 
 ---
 
-## 📦 Installation
+## Demo
+
+<p align="center">
+  <img src="https://github.com/mobina1380/netgraph3d/blob/main/assets/demo.gif?raw=true"/>
+</p>
+
+---
+
+## Installation
 
 ```bash
 pip install netgraph3d
@@ -47,24 +27,38 @@ pip install netgraph3d
 
 ---
 
-## 🎯 Features
+## Quick Start
 
-- 🖱️ Click any node to inspect attributes in a side panel
-- 🔍 Search and highlight nodes by name or label
-- 🏷️ Toggle node labels on/off
-- 🔗 Toggle edge labels on/off
-- 🔄 Auto-rotate the scene
-- 🖱️ Drag to rotate manually
-- 🔎 Smooth zoom support
-- ⌨️ Press `Escape` to deselect nodes
-- 📄 Export as a single self-contained HTML file
-- 🌐 Share anywhere — no backend required
+```python
+import networkx as nx
+from netgraph3d import to_html
+
+G = nx.karate_club_graph()
+
+to_html(G, title="Karate Club Network")
+```
+
+That's it. Your browser opens with a fully interactive 3D graph.
 
 ---
 
-# 📚 Supported Input Formats
+## Features
 
-## NetworkX Graph
+- 🖱️ Click any node to inspect all its attributes in a side panel
+- 🔍 Search bar to highlight nodes by name or label
+- 🏷️ Toggle node labels on/off
+- 🔗 Toggle edge labels on/off
+- 🔄 Auto-rotate the scene (toggle on/off)
+- 🖱️ Drag to rotate manually
+- 🖱️ Scroll to zoom in/out
+- ⌨️ Escape to deselect a node
+- 📄 Self-contained HTML — one file, share anywhere
+
+---
+
+## Supported Input Formats
+
+### NetworkX graph (direct)
 
 ```python
 import networkx as nx
@@ -87,16 +81,14 @@ to_html(G, title="My Network")
 
 ---
 
-## CSV Files
+### CSV file
 
 ```python
 import networkx as nx
 import pandas as pd
 from netgraph3d import to_html
 
-# edges.csv columns:
-# source, target, weight, relation
-
+# edges.csv columns: source, target, weight, relation
 edges_df = pd.read_csv("edges.csv")
 
 G = nx.from_pandas_edgelist(
@@ -106,17 +98,16 @@ G = nx.from_pandas_edgelist(
     edge_attr=True
 )
 
-# Optional node metadata
-nodes_df = pd.read_csv("nodes.csv").set_index("id")
-
-for node, attrs in nodes_df.to_dict(orient="index").items():
-    if G.has_node(node):
-        G.nodes[node].update(attrs)
+# Optional: load node attributes from nodes.csv
+# nodes_df = pd.read_csv("nodes.csv").set_index("id")
+# for node, attrs in nodes_df.to_dict(orient="index").items():
+#     if G.has_node(node):
+#         G.nodes[node].update(attrs)
 
 to_html(G, title="CSV Network")
 ```
 
-### edges.csv
+**edges.csv format:**
 
 ```csv
 source,target,weight,relation
@@ -124,27 +115,17 @@ Alice,Bob,0.8,friend
 Bob,Carol,0.5,colleague
 ```
 
-### nodes.csv
-
-```csv
-id,label,group
-Alice,Alice,Engineering
-Bob,Bob,Marketing
-```
-
 ---
 
-## Excel Files
+### Excel file
 
 ```python
 import networkx as nx
 import pandas as pd
 from netgraph3d import to_html
 
-edges_df = pd.read_excel(
-    "graph.xlsx",
-    sheet_name="edges"
-)
+# graph.xlsx: sheet "edges" with columns source, target, weight, relation
+edges_df = pd.read_excel("graph.xlsx", sheet_name="edges")
 
 G = nx.from_pandas_edgelist(
     edges_df,
@@ -156,9 +137,16 @@ G = nx.from_pandas_edgelist(
 to_html(G, title="Excel Network")
 ```
 
+**graph.xlsx sheet "edges" format:**
+
+| source | target | weight | relation |
+|--------|--------|--------|----------|
+| Alice  | Bob    | 0.8    | friend   |
+| Bob    | Carol  | 0.5    | colleague |
+
 ---
 
-## JSON Files
+### JSON file
 
 ```python
 import networkx as nx
@@ -172,12 +160,7 @@ G = nx.Graph()
 
 for n in data["nodes"]:
     nid = n["id"]
-    attrs = {
-        k: v
-        for k, v in n.items()
-        if k != "id"
-    }
-
+    attrs = {k: v for k, v in n.items() if k != "id"}
     G.add_node(nid, **attrs)
 
 for e in data["edges"]:
@@ -190,53 +173,55 @@ for e in data["edges"]:
 to_html(G, title="JSON Network")
 ```
 
+**graph.json format:**
+
+```json
+{
+  "nodes": [
+    {"id": "Alice", "label": "Alice", "role": "admin"},
+    {"id": "Bob", "label": "Bob", "role": "user"}
+  ],
+  "edges": [
+    {"source": "Alice", "target": "Bob", "weight": 0.8, "relation": "friend"}
+  ]
+}
+```
+
 ---
 
-# 🧪 Built-in Test Graphs
-
-Perfect for quick experimentation.
+### Built-in NetworkX graphs (great for testing)
 
 ```python
 import networkx as nx
 from netgraph3d import to_html
 
-# Classic social network
-G = nx.karate_club_graph()
-
-# Other options:
-# G = nx.les_miserables_graph()
-# G = nx.barabasi_albert_graph(50, 2)
+G = nx.karate_club_graph()            # 34 nodes, classic social network
+# G = nx.les_miserables_graph()       # Characters from Les Misérables
+# G = nx.barabasi_albert_graph(50, 2) # Random scale-free network
 
 to_html(G, title="Test Network")
 ```
 
 ---
 
-# ⚙️ API Reference
+## API Reference
 
 ```python
 to_html(
-    G,
-    output_path="network_graph.html",
-    title="3D Network Graph",
-    pos_3d=None,
-    seed=42,
-    open_browser=True
+    G,                                 # NetworkX graph (Graph, DiGraph, etc.)
+    output_path="network_graph.html",  # Path to save the HTML file
+    title="3D Network Graph",          # Title shown in browser tab and top bar
+    pos_3d=None,                       # Custom {node: (x, y, z)} positions (optional)
+    seed=42,                           # Random seed for layout reproducibility
+    open_browser=True                  # Automatically open in browser
 )
 ```
 
-| Parameter | Description |
-|---|---|
-| `G` | NetworkX graph |
-| `output_path` | Output HTML file |
-| `title` | Browser title |
-| `pos_3d` | Optional custom node positions |
-| `seed` | Layout reproducibility |
-| `open_browser` | Automatically open output |
-
 ---
 
-# 🧩 Node Attributes
+## Node attributes
+
+Any attribute added to a node is automatically displayed in the info panel when clicked:
 
 ```python
 G.add_node(
@@ -247,11 +232,11 @@ G.add_node(
 )
 ```
 
-All node attributes automatically appear in the info panel.
+The `label` attribute is used as the node's display name. All other attributes appear in the side panel.
 
 ---
 
-# 🔗 Edge Attributes
+## Edge attributes
 
 ```python
 G.add_edge(
@@ -263,29 +248,24 @@ G.add_edge(
 )
 ```
 
-| Attribute | Purpose |
-|---|---|
-| `weight` | Edge thickness & opacity |
-| `relation` / `type` | Edge label |
-| other attrs | Stored and accessible |
+- `weight` — controls edge thickness and opacity (0.0 to 1.0)
+- `relation` or `type` — used as the edge label in the visualization
+- All other attributes are stored and accessible
 
 ---
 
-# 📋 Requirements
-
-Core:
+## Requirements
 
 - Python >= 3.8
 - networkx
 
-Optional:
+Optional (for CSV/Excel input):
 
-```bash
-pip install pandas openpyxl
-```
+- pandas
+- openpyxl (`pip install openpyxl`)
 
 ---
 
-# 📄 License
+## License
 
 MIT License — free to use, modify, and distribute.
