@@ -13,9 +13,7 @@ A single HTML file is generated and opens automatically in your browser. No serv
 
 ## Demo
 
-<p align="center">
-  <img src="https://github.com/mobina1380/netgraph3d/blob/main/assets/demo.gif?raw=true"/>
-</p>
+![Demo](https://raw.githubusercontent.com/mobina1380/netgraph3d/main/assets/demo.gif)
 
 ---
 
